@@ -26,10 +26,10 @@
           {{ folderName }}
           <oc-button
             v-if="shareUrl"
+            v-oc-tooltip="$gettext('Copy public link')"
             appearance="raw"
             size="small"
             class="ext:ml-2 ext:opacity-40 hover:ext:opacity-100"
-            :title="$gettext('Copy public link')"
             @click="copyShareUrl"
           >
             <oc-icon :name="shareCopied ? 'checkbox-circle' : 'link'" size="small" />
@@ -102,6 +102,7 @@ import {
   queryItemAsString,
   useClientService,
   useConfigStore,
+  useMessages,
   useResourcesStore,
   useRouteQuery,
   useRouter,
@@ -136,7 +137,9 @@ const { $gettext } = useGettext()
 const resourcesStore = useResourcesStore()
 const sharesStore = useSharesStore()
 const clientService = useClientService()
+const { showMessage } = useMessages()
 const configStore = useConfigStore()
+
 const router = useRouter()
 const { deletePastebin: dispatchDeletePastebin } = useDeletePastebin()
 const isAuthenticated = computed(() => !isPublicSpaceResource(space))
@@ -193,7 +196,13 @@ const { copy: copyToClipboard, copied: shareCopied } = useClipboard({
   legacy: true,
   copiedDuring: 1500
 })
-const copyShareUrl = () => copyToClipboard(shareUrl.value)
+const copyShareUrl = () => {
+  copyToClipboard(shareUrl.value)
+  showMessage({
+    title: $gettext('Link copied'),
+    desc: $gettext('The public pastebin link has been copied to your clipboard.')
+  })
+}
 
 const deletePastebin = () => {
   dispatchDeletePastebin(space, resource, folderName.value, async () => {
