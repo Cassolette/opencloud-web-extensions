@@ -1,5 +1,6 @@
 {
   "config": {
+    "showMenuItem": true,
     "url": "https://embed.diagrams.net",
     "theme": "minimal"
   }

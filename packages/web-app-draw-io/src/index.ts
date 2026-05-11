@@ -16,7 +16,7 @@ import { computed } from 'vue'
 const applicationId = 'draw-io'
 
 export default defineWebApplication({
-  setup() {
+  setup({ applicationConfig }) {
     const { $gettext } = useGettext()
     const userStore = useUserStore()
     const { openEmptyEditor } = useOpenEmptyEditor()
@@ -62,10 +62,12 @@ export default defineWebApplication({
       ]
     }
 
+    const { showMenuItem = true } = applicationConfig
+
     const menuItems = computed<AppMenuItemExtension[]>(() => {
       const items: AppMenuItemExtension[] = []
 
-      if (userStore.user && spacesStore.personalSpace) {
+      if (showMenuItem && userStore.user && spacesStore.personalSpace) {
         items.push({
           id: `app.${appInfo.id}.menuItem`,
           type: 'appMenuItem',
