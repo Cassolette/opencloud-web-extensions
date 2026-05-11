@@ -5,7 +5,6 @@ import {
   ApplicationInformation,
   defineWebApplication,
   useSpacesStore,
-  useUserStore
 } from '@opencloud-eu/web-pkg'
 import { urlJoin } from '@opencloud-eu/web-client'
 import { computed } from 'vue'
@@ -22,7 +21,6 @@ const applicationId = 'pastebin'
 export default defineWebApplication({
   setup() {
     const { $gettext } = useGettext()
-    const userStore = useUserStore()
     const spacesStore = useSpacesStore()
 
     const routes = [
@@ -84,7 +82,7 @@ export default defineWebApplication({
     const menuItems = computed<AppMenuItemExtension[]>(() => {
       const items: AppMenuItemExtension[] = []
 
-      if (userStore.user && spacesStore.personalSpace) {
+      if (spacesStore.personalSpace) {
         items.push({
           id: `app.${applicationId}.menuItem`,
           type: 'appMenuItem',
